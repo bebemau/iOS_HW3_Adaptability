@@ -9,7 +9,10 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-
+@property (nonatomic) NSArray *hourlyForecast;
+@property (nonatomic, copy) NSString *city;
+@property (nonatomic, copy) NSString *sunrise;
+@property (nonatomic, copy) NSString *sunset;
 @end
 
 @implementation ViewController
@@ -17,17 +20,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    //read plist
-    NSURL *plistURL = [[NSBundle mainBundle] URLForResource: @"WeatherData" withExtension:@"plist"];
-    NSDictionary *weatherInfo = [NSDictionary dictionaryWithContentsOfURL:plistURL];
-    NSArray *hourlyForecast = weatherInfo[@"New item"][@"HourlyForecast"];
-    
+
+    [self readPList];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) readPList{
+    NSURL *plistURL = [[NSBundle mainBundle] URLForResource: @"WeatherData" withExtension:@"plist"];
+    NSDictionary *weatherInfo = [NSDictionary dictionaryWithContentsOfURL:plistURL];
+    NSArray *hourlyForecast = weatherInfo[@"New item"][@"HourlyForecast"];
+    NSString *city = weatherInfo[@"New item"][@"City"];
+    NSString *sunrise =weatherInfo[@"New item"][@"Sunrise"];
+    NSString *sunset =weatherInfo[@"New item"][@"Sunset"];
 }
 
 @end
