@@ -13,6 +13,15 @@
 @property (nonatomic, copy) NSString *city;
 @property (nonatomic, copy) NSString *sunrise;
 @property (nonatomic, copy) NSString *sunset;
+@property (weak, nonatomic) IBOutlet UILabel *lblCity;
+@property (weak, nonatomic) IBOutlet UILabel *lblCurrentTemperature;
+@property (weak, nonatomic) IBOutlet UILabel *lbl8am;
+@property (weak, nonatomic) IBOutlet UILabel *lbl9am;
+@property (weak, nonatomic) IBOutlet UILabel *lbl10am;
+@property (weak, nonatomic) IBOutlet UILabel *lbl8amTemp;
+@property (weak, nonatomic) IBOutlet UILabel *lbl9amTemp;
+@property (weak, nonatomic) IBOutlet UILabel *lbl10amTemp;
+
 @end
 
 @implementation ViewController
@@ -22,6 +31,15 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     [self readPList];
+    
+    //display data
+    self.lblCity.text = self.city;
+    self.lbl8amTemp.text =  [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex:8]];
+    self.lbl9amTemp.text = [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex:9]];
+    self.lbl10amTemp.text = [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex:10]];
+    NSInteger currentHour = [self CurrentTimeHour];
+    self.lblCurrentTemperature.text = [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex: currentHour]];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,13 +47,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSInteger)CurrentTimeHour{
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitHour fromDate:now];
+    return [components hour];
+}
+
 -(void) readPList{
     NSURL *plistURL = [[NSBundle mainBundle] URLForResource: @"WeatherData" withExtension:@"plist"];
     NSDictionary *weatherInfo = [NSDictionary dictionaryWithContentsOfURL:plistURL];
-    NSArray *hourlyForecast = weatherInfo[@"New item"][@"HourlyForecast"];
-    NSString *city = weatherInfo[@"New item"][@"City"];
-    NSString *sunrise =weatherInfo[@"New item"][@"Sunrise"];
-    NSString *sunset =weatherInfo[@"New item"][@"Sunset"];
+    self.hourlyForecast = weatherInfo[@"New item"][@"HourlyForecast"];
+    self.city = weatherInfo[@"New item"][@"City"];
+    self.sunrise =weatherInfo[@"New item"][@"Sunrise"];
+    self.sunset =weatherInfo[@"New item"][@"Sunset"];
 }
 
 @end
