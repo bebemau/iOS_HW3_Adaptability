@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbl8amTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lbl9amTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lbl10amTemp;
+@property (weak, nonatomic) IBOutlet UILabel *lblSunrise;
+@property (weak, nonatomic) IBOutlet UILabel *lblSunset;
 
 @end
 
@@ -39,6 +41,8 @@
     self.lbl10amTemp.text = [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex:10]];
     NSInteger currentHour = [self CurrentTimeHour];
     self.lblCurrentTemperature.text = [NSString stringWithFormat:@"%@", [self.hourlyForecast objectAtIndex: currentHour]];
+    self.lblSunrise.text = self.sunrise;
+    self.lblSunset.text = self.sunset;
     
 }
 
